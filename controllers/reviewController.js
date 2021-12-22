@@ -65,7 +65,7 @@ const createReview = async function (req, res) {
       return
     }
 
-    await bookmodel.findOneAndUpdate({ _id: req.params.bookId }, { reviews: checkBookId.reviews + 1 }, { new: true })
+     let bookDetail = await bookmodel.findOneAndUpdate({ _id: req.params.bookId }, { reviews: checkBookId.reviews + 1 }, { new: true })
 
     requestBody.reviewedAt = new Date()
     requestBody.bookId = req.params.bookId
@@ -84,7 +84,7 @@ const createReview = async function (req, res) {
      review: create.review 
 
     }
-    res.status(201).send({ status: true, message: 'review created sucessfully', data: data })
+    res.status(201).send({ status: true, message: 'review created sucessfully', data:{...bookDetail.toObject(),review:data} })
 
 
   } catch (error) {
